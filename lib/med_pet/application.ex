@@ -7,6 +7,9 @@ defmodule MedPet.Application do
 
   @impl true
   def start(_type, _args) do
+    # Load .env variables
+    Envy.auto_load()
+
     children = [
       # Start the Telemetry supervisor
       MedPetWeb.Telemetry,
