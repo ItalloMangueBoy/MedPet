@@ -41,7 +41,9 @@ defmodule MedPet.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:envy, "~> 1.1.1"}
+      {:envy, "~> 1.1.1"},
+      {:argon2_elixir, "~> 4.0"}
+
     ]
   end
 
