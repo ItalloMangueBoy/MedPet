@@ -3,8 +3,7 @@ defmodule MedPet.Repo.Migrations.CreateUsers do
   alias MedPet.Regex.User, as: Rx
 
   def change do
-    create table(:users, primary_key: false) do
-      add :id, :binary_id, null: false, primary_key: true
+    create table(:users) do
       add :name, :string, null: false
       add :cpf, :string, null: false, size: 11
       add :tel, :string, null: false, size: 14

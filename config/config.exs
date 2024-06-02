@@ -8,8 +8,7 @@
 import Config
 
 config :med_pet,
-  ecto_repos: [MedPet.Repo],
-  generators: [binary_id: true]
+  ecto_repos: [MedPet.Repo]
 
 # Configures the endpoint
 config :med_pet, MedPetWeb.Endpoint,
