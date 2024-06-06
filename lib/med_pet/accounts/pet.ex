@@ -3,6 +3,10 @@ defmodule MedPet.Accounts.Pet do
   alias MedPet.Accounts.User
   import Ecto.Changeset
 
+  @fields [:name, :color, :specie, :breed, :sex, :age]
+
+  @derive {Jason.Encoder, only: [:id | @fields]}
+
   schema "pets" do
     field :name, :string
     field :color, :string
@@ -17,7 +21,7 @@ defmodule MedPet.Accounts.Pet do
   end
 
   @type t :: %__MODULE__{
-          id: integer() ,
+          id: integer(),
           name: String.t(),
           color: String.t(),
           specie: String.t(),
@@ -37,6 +41,7 @@ defmodule MedPet.Accounts.Pet do
     |> validate_specie()
     |> validate_age()
     |> validate_sex()
+    |> validate_user()
   end
 
   # VALIDATIONS
@@ -55,5 +60,11 @@ defmodule MedPet.Accounts.Pet do
     changeset
     |> validate_required([:sex], message: "insira o sexo do pet")
     |> validate_format(:sex, ~r"^[M|F]{1}$", message: "sexo invalido")
+  end
+
+  defp validate_user(changeset) do
+    changeset
+    |> validate_required([:user_id], message: "usuario necessário")
+    |> assoc_constraint(:user, message: "usuario inválido")
   end
 end
