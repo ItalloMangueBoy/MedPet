@@ -42,7 +42,8 @@ defmodule MedPet.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:envy, "~> 1.1.1"},
-      {:argon2_elixir, "~> 4.0"}
+      {:argon2_elixir, "~> 4.0"},
+      {:guardian, "~> 2.3.2"}
 
     ]
   end

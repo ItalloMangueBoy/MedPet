@@ -28,6 +28,11 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Config guardian
+config :med_pet, MedPet.Guardian,
+  issuer: "med_pet",
+  secret_key: "95QpI/BTkD4aIm+r+SJ5eYfeYLhpJKaUerqf0Sx5DZ/A70+DsH7WTV13G3WPURRb"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
