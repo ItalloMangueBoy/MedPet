@@ -6,9 +6,11 @@ defmodule MedPet.Accounts.User do
 
   @fields [:name, :cpf, :tel, :email, :password]
 
+  @derive {Jason.Encoder, only: [:id | @fields]}
+
   schema "users" do
     field :name, :string
-    field :password, :string, redact: true, load_in_query: false
+    field :password, :string
     field :cpf, :string
     field :tel, :string
     field :email, :string
@@ -63,10 +65,14 @@ defmodule MedPet.Accounts.User do
   @spec validate_password(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp validate_password(changeset, opts \\ []) do
     confirm? = Keyword.get(opts, :confirm?, false)
+    message = Keyword.get(opts, :message)
 
     changeset
-    |> validate_required([:password], message: "insira sua senha")
-    |> validate_confirmation(:password, required: confirm?, message: "as senhas não batem")
+    |> validate_required([:password], message: message || "insira sua senha")
+    |> validate_confirmation(:password,
+      required: confirm?,
+      message: message || "as senhas não batem"
+    )
   end
 
   @spec validate_cpf(Ecto.Changeset.t()) :: Ecto.Changeset.t()
@@ -88,13 +94,17 @@ defmodule MedPet.Accounts.User do
   @spec validate_email(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   defp validate_email(changeset, opts \\ []) do
     confirm? = Keyword.get(opts, :confirm?, false)
+    message = Keyword.get(opts, :message)
 
     changeset
-    |> validate_required([:email], message: "insira seu email")
-    |> validate_confirmation(:email, required: confirm?, message: "os emails não batem")
-    |> validate_length(:email, max: 254, message: "email invalido")
-    |> validate_format(:email, Rx.email(), "email invalido")
-    |> unique_constraint(:email, message: "este email ja foi registrado")
+    |> validate_required([:email], message: message || "insira seu email")
+    |> validate_confirmation(:email,
+      required: confirm?,
+      message: message || "os emails não batem"
+    )
+    |> validate_length(:email, max: 254, message: message || "email invalido")
+    |> validate_format(:email, Rx.email(), message: message || "email invalido")
+    |> unique_constraint(:email, message: message || "este email ja foi registrado")
   end
 
   # PARSERS

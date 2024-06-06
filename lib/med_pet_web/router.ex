@@ -1,12 +1,34 @@
 defmodule MedPetWeb.Router do
   use MedPetWeb, :router
 
+  alias MedPet.Guardian.Pipeline.EnsureAuth
+  alias MedPet.Guardian.Pipeline.EnsureNotAuth
+  alias MedPet.Guardian.Pipeline.MaybeAuth
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/api", MedPetWeb do
-    pipe_through :api
+    pipe_through [:api, MaybeAuth]
+
+    resources "/users", UserController, only: [:show]
+  end
+
+  scope "/api", MedPetWeb do
+    pipe_through [:api, EnsureNotAuth]
+
+    resources "/users", UserController, only: [:create]
+    post "/login", UserController, :login
+  end
+
+  scope "/api", MedPetWeb do
+    pipe_through [:api, EnsureAuth]
+
+    resources "/users", UserController, only: []
+    get "/current/users", UserController, :current
+
+    resources "/pets", PetController, only: [:create]
   end
 
   # Enable LiveDashboard in development
