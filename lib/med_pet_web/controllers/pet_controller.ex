@@ -6,9 +6,10 @@ defmodule MedPetWeb.PetController do
 
   action_fallback MedPetWeb.FallbackController
 
-  def index(conn, _params) do
-    pets = Accounts.list_pets()
-    render(conn, :index, pets: pets)
+  def index(conn, %{"user_id" => id}) do
+    with {:ok, pets} <- Accounts.list_pets_by_user(id) do
+      render(conn, :index, pets: pets)
+    end
   end
 
   def create(conn, %{"data" => attrs}) do

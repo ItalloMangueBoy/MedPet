@@ -18,7 +18,10 @@ defmodule MedPetWeb.Router do
   scope "/api", MedPetWeb do
     pipe_through [:api, EnsureNotAuth]
 
-    resources "/users", UserController, only: [:create]
+    resources "/users", UserController, only: [:create] do
+      resources "/pets", PetController, only: [:index]
+    end
+
     post "/login", UserController, :login
   end
 
