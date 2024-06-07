@@ -10,6 +10,8 @@ defmodule MedPet.Accounts do
   alias MedPet.Accounts.User
   alias MedPet.Accounts.Pet
 
+  @type id :: non_neg_integer() | String.t()
+
   @doc """
   Returns the list of users.
 
@@ -39,6 +41,7 @@ defmodule MedPet.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @spec get_user(id()) :: {:error, :not_found} | {:ok, User.t()}
   @doc """
   Gets a single user.
   Return {:error, :not_found} if the User cant be finded.
@@ -224,6 +227,28 @@ defmodule MedPet.Accounts do
 
   """
   def get_pet!(id), do: Repo.get!(Pet, id)
+
+  @spec get_pet(id()) :: {:error, :not_found} | {:ok, Pet.t()}
+  @doc """
+  Gets a single Pet.
+  Return {:error, :not_found} if the Pet cant be finded.
+
+  ## Examples
+
+      iex> get_pet(123)
+      {:ok, %Pet{}}
+
+      iex> get_pet(456)
+      {:error, :not_found}
+
+  """
+  def get_pet(id) do
+    try do
+      {:ok, Repo.get!(Pet, id)}
+    rescue
+      Ecto.NoResultsError -> {:error, :not_found}
+    end
+  end
 
   @doc """
   Creates a pet.

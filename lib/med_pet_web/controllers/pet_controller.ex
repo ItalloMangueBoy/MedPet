@@ -22,8 +22,9 @@ defmodule MedPetWeb.PetController do
   end
 
   def show(conn, %{"id" => id}) do
-    pet = Accounts.get_pet!(id)
-    render(conn, :show, pet: pet)
+    with {:ok, pet} <- Accounts.get_pet(id) do
+      render(conn, :show, pet: pet)
+    end
   end
 
   def update(conn, %{"id" => id, "pet" => pet_params}) do

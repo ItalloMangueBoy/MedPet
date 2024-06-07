@@ -13,6 +13,8 @@ defmodule MedPetWeb.Router do
     pipe_through [:api, MaybeAuth]
 
     resources "/users", UserController, only: [:show]
+
+    resources "/pets", PetController, only: [:show]
   end
 
   scope "/api", MedPetWeb do
