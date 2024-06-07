@@ -39,6 +39,19 @@ defmodule MedPet.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Gets a single user.
+  Return {:error, :not_found} if the User cant be finded.
+
+  ## Examples
+
+      iex> get_user(123)
+      {:ok, %User{}}
+
+      iex> get_user(456)
+      {:error, :not_found}
+
+  """
   def get_user(id) do
     try do
       {:ok, Repo.get!(User, id)}
@@ -175,6 +188,25 @@ defmodule MedPet.Accounts do
   """
   def list_pets do
     Repo.all(Pet)
+  end
+
+  @spec list_pets_by_user(integer() | String.t()) :: {:error, :not_found} | {:ok, Pet.t()}
+  @doc """
+  Returns an user´s pet list .
+
+  ## Examples
+
+      iex> list_pets_by_user(1)
+      [%Pet{}, ...]
+
+      iex> list_pets_by_user("1")
+      [%Pet{}, ...]
+  """
+  def list_pets_by_user(id) do
+    with {:ok, user} <- get_user(id),
+         pets <- Repo.all(Ecto.assoc(user, :pets)) do
+      {:ok, pets}
+    end
   end
 
   @doc """
